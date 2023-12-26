@@ -1,0 +1,14 @@
+
+# Ignore all .dSYM directories
+*.dSYM/
+
+# Ignore executables (Unix-like systems)
+*
+!*.c
+!*.h
+!**/
+!*.json
+!.gitignore
+
+# Other artifacts
+tempCodeRunnerFile.c
