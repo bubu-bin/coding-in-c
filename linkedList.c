@@ -6,6 +6,7 @@
  * - getLen
  * - printList
  * - push
+ * - getNth
  */
 
 struct Node
@@ -36,6 +37,23 @@ int getLen(struct Node *head)
     return len;
 }
 
+void printList(struct Node *head)
+{
+    struct Node *current = head;
+
+    if (current == NULL)
+    {
+        puts("The list is empty");
+        return;
+    }
+
+    while (current != NULL)
+    {
+        printf("Value is %d\n", current->value);
+        current = current->next;
+    }
+}
+
 void push(struct Node **headRef, int value)
 {
     struct Node *current = *headRef;
@@ -62,33 +80,36 @@ void push(struct Node **headRef, int value)
     current->next = newNode;
 }
 
-void printList(struct Node *headRef)
+int getNth(int index, struct Node *head)
 {
-    struct Node *current = headRef;
+    int len = getLen(head);
 
-    if (current == NULL)
+    if (index >= len)
     {
-        puts("The list is empty");
-        return;
+        printf("The index is greater than the length. Skipping execution");
+        return -1;
     }
 
-    while (current != NULL)
+    struct Node *current = head;
+    int currentIndex = 0;
+
+    while (currentIndex != index)
     {
-        printf("Value is %d\n", current->value);
+        currentIndex++;
         current = current->next;
     }
+
+    printf("Node found at index: %d with value: %d\n", index, current->value);
+    return current->value;
 }
 
 int main()
 {
-    printList(head);
-    push(&head, 2);
-    push(&head, 3);
-    push(&head, 4);
-    push(&head, 5);
+    push(&head, 122);
+    push(&head, 12);
+    push(&head, 42);
 
-    printf("Length is %d\n", getLen(head));
-    printList(head);
+    getNth(3, head);
 
     return 0;
 }
