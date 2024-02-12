@@ -82,21 +82,19 @@ void push(struct Node **headRef, int value)
 
 int getNth(int index, struct Node *head)
 {
-    int len = getLen(head);
-
-    if (index >= len)
-    {
-        printf("The index is greater than the length. Skipping execution");
-        return -1;
-    }
-
     struct Node *current = head;
     int currentIndex = 0;
 
-    while (currentIndex != index)
+    while (current != NULL && currentIndex != index)
     {
-        currentIndex++;
         current = current->next;
+        currentIndex++;
+    }
+
+    if (current == NULL)
+    {
+        printf("Node with index: %d not found\n", index);
+        return -1;
     }
 
     printf("Node found at index: %d with value: %d\n", index, current->value);
@@ -106,10 +104,9 @@ int getNth(int index, struct Node *head)
 int main()
 {
     push(&head, 122);
-    push(&head, 12);
-    push(&head, 42);
+    push(&head, 122);
 
-    getNth(3, head);
+    getNth(2, head);
 
     return 0;
 }
