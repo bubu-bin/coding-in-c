@@ -7,6 +7,8 @@
  * - printList
  * - push
  * - getNth
+ * - clear
+ * - set
  */
 
 struct Node
@@ -80,7 +82,7 @@ void push(struct Node **headRef, int value)
     current->next = newNode;
 }
 
-int getNth(int index, struct Node *head)
+struct Node *getNth(struct Node *head, int index)
 {
     struct Node *current = head;
     int currentIndex = 0;
@@ -94,11 +96,11 @@ int getNth(int index, struct Node *head)
     if (current == NULL)
     {
         printf("Node with index: %d not found\n", index);
-        return -1;
+        return NULL;
     }
 
     printf("Node found at index: %d with value: %d\n", index, current->value);
-    return current->value;
+    return current;
 }
 
 void clear(struct Node **head)
@@ -116,16 +118,25 @@ void clear(struct Node **head)
     puts("cleared");
 }
 
+void set(struct Node *head, int index, int value)
+{
+    struct Node *node = getNth(head, index);
+
+    if (node != NULL)
+    {
+        printf("Updated node at index: %d with value: %d\n", index, value);
+        node->value = value;
+    }
+}
+
 int main()
 {
     push(&head, 122);
     push(&head, 122);
 
-    printf("len is %d\n", getLen(head));
+    set(head, 1, 3);
 
-    clear(&head);
-
-    printf("len is %d\n", getLen(head));
+    printList(head);
 
     return 0;
 }
