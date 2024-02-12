@@ -9,6 +9,7 @@
  * - getNth
  * - clear
  * - set
+ * - indexOf
  */
 
 struct Node
@@ -129,14 +130,33 @@ void set(struct Node *head, int index, int value)
     }
 }
 
+int indexOf(struct Node *head, int value)
+{
+    struct Node *current = head;
+    int currentIndex = 0;
+
+    while (current != NULL)
+    {
+        if (current->value == value)
+        {
+            printf("Node with value %d found at index %d", value, currentIndex);
+            return currentIndex;
+        }
+
+        currentIndex++;
+        current = current->next;
+    }
+
+    printf("Node with value: %d not found\n", value);
+    return -1;
+}
+
 int main()
 {
     push(&head, 122);
-    push(&head, 122);
+    push(&head, 129);
 
-    set(head, 1, 3);
-
-    printList(head);
+    indexOf(head, 122);
 
     return 0;
 }
