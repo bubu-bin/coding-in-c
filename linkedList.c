@@ -151,12 +151,22 @@ int indexOf(struct Node *head, int value)
     return -1;
 }
 
+void unshift(struct Node **head, int value)
+{
+    struct Node *newNode = malloc(sizeof(struct Node));
+
+    newNode->value = value;
+    newNode->next = *head;
+    *head = newNode;
+}
+
 int main()
 {
     push(&head, 122);
     push(&head, 129);
+    unshift(&head, 5);
 
-    indexOf(head, 122);
+    printList(head);
 
     return 0;
 }
