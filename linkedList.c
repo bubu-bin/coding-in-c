@@ -101,12 +101,31 @@ int getNth(int index, struct Node *head)
     return current->value;
 }
 
+void clear(struct Node **head)
+{
+    struct Node *current = *head;
+
+    while (current != NULL)
+    {
+        struct Node *temp = current;
+        current = current->next;
+        free(temp);
+    }
+
+    *head = NULL;
+    puts("cleared");
+}
+
 int main()
 {
     push(&head, 122);
     push(&head, 122);
 
-    getNth(2, head);
+    printf("len is %d\n", getLen(head));
+
+    clear(&head);
+
+    printf("len is %d\n", getLen(head));
 
     return 0;
 }
