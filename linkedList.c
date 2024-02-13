@@ -10,6 +10,8 @@
  * - clear
  * - set
  * - indexOf
+ * - unshift
+ * - removeByIndex
  */
 
 struct Node
@@ -34,8 +36,6 @@ int getLen(struct Node *head)
         head = head->next;
         len++;
     };
-
-    len++;
 
     return len;
 }
@@ -160,12 +160,52 @@ void unshift(struct Node **head, int value)
     *head = newNode;
 }
 
+void removeByIndex(struct Node **head, int index)
+{
+    if (*head == NULL)
+    {
+        printf("List is empty, nothing to remove.\n");
+        return;
+    }
+
+    if (index == 0)
+    {
+        struct Node *temp = *head;
+        *head = (*head)->next;
+        free(temp);
+        return;
+    }
+
+    struct Node *current = *head;
+    struct Node *prev = NULL;
+    int currentIndex = 0;
+
+    while (current != NULL && index != currentIndex)
+    {
+        prev = current;
+        current = current->next;
+        currentIndex++;
+    }
+
+    if (current == NULL)
+    {
+        printf("Node at index: %d not found\n", index);
+        return;
+    }
+
+    prev->next = current->next;
+    free(current);
+    printf("Node found at index: %d\n", index);
+}
+
 int main()
 {
-    push(&head, 122);
-    push(&head, 129);
-    unshift(&head, 5);
+    push(&head, 29);
+    push(&head, 21);
+    push(&head, 24);
+    push(&head, 22);
 
+    removeByIndex(&head, 1);
     printList(head);
 
     return 0;
