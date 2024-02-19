@@ -2,7 +2,7 @@
 
 void insertionSort(int nums[], int size)
 {
-  for (int i = 0; i < size; i++)
+  for (int i = 1; i < size; i++)
   {
     for (int j = i; j > 0; j--)
     {
@@ -30,7 +30,7 @@ void printNums(int nums[], int size)
 
 int main()
 {
-  int nums[] = {1, 4, 2, 3, 4, 1};
+  int nums[] = {1};
   int size = sizeof(nums) / sizeof(nums[0]);
 
   insertionSort(nums, size);
