@@ -44,6 +44,34 @@ struct HashTable *createHashTable(int size)
     return table;
 }
 
+void printHashTable(struct HashTable *table)
+{
+    if (table == NULL)
+    {
+        return;
+    }
+
+    for (int i = 0; i < table->size; i++)
+    {
+        struct Entry *entry = &table->entries[i];
+
+        if (entry->key == NULL)
+        {
+            printf("[Index %d]: <empty>\n", i);
+            continue;
+        }
+
+        int listPos = 0;
+
+        while (entry != NULL)
+        {
+            printf("[Index %d]: [ListPos]: %d [Key]: %s [Value]: %d\n", i, listPos, entry->key, entry->value);
+            entry = entry->next;
+            listPos++;
+        }
+    }
+}
+
 void add(struct HashTable *table, char *key, int value)
 {
     if (table == NULL)
@@ -51,8 +79,7 @@ void add(struct HashTable *table, char *key, int value)
         return;
     }
 
-    unsigned int hash = hashFunction(key);
-    unsigned int index = hash % table->size;
+    unsigned int index = hashFunction(key) % table->size;
 
     struct Entry *entry = &table->entries[index];
 
@@ -88,32 +115,27 @@ void add(struct HashTable *table, char *key, int value)
     entry->next = newEntry;
 }
 
-void printTable(struct HashTable *table)
+int search(struct HashTable *table, char *key)
 {
     if (table == NULL)
     {
-        return;
+        return -1;
     }
 
-    for (int i = 0; i < table->size; i++)
+    unsigned int index = hashFunction(key) % table->size;
+    struct Entry *entry = &table->entries[index];
+
+    while (entry != NULL)
     {
-        struct Entry *entry = &table->entries[i];
-
-        if (entry->key == NULL)
+        if (strcmp(entry->key, key) == 0)
         {
-            printf("[Index %d]: <empty>\n", i);
-            continue;
+            return entry->value;
         }
 
-        int listPos = 0;
-
-        while (entry != NULL)
-        {
-            printf("[Index %d]: [ListPos]: %d [Key]: %s [Value]: %d\n", i, listPos, entry->key, entry->value);
-            entry = entry->next;
-            listPos++;
-        }
+        entry = entry->next;
     }
+
+    return -1;
 }
 
 int main()
@@ -121,14 +143,14 @@ int main()
     struct HashTable *table = createHashTable(11);
 
     add(table, "key1", 100);
-    add(table, "key1", 102);
-
     add(table, "key2", 123);
     add(table, "key5", 1241);
     add(table, "key10", 241);
 
     add(table, "2yek", 1231);
-    printTable(table);
+    printHashTable(table);
+
+    printf("value for key2 is %d", search(table, "key2"));
 
     return 0;
 }
