@@ -2,26 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-/**
- * Hash table interface
- * - add
- * - get
- * - set
- * - delete
- */
-
-/**
- * @todo
- * - update hash table to allow for chaining in case of collisions
- * - implement get
- * - implement set
- * - implement delete
- */
-
 struct Entry
 {
     char *key;
     int value;
+    struct Entry *next;
 };
 
 struct HashTable
@@ -30,9 +15,9 @@ struct HashTable
     struct Entry *entries;
 };
 
-unsigned long hashFunction(char *str)
+unsigned int hashFunction(char *str)
 {
-    unsigned long hash = 0;
+    unsigned int hash = 0;
 
     while (*str)
     {
@@ -48,11 +33,12 @@ struct HashTable *createHashTable(int size)
     struct HashTable *table = malloc(sizeof(struct HashTable));
 
     table->size = size;
-
     table->entries = malloc(sizeof(struct Entry) * size);
+
     for (int i = 0; i < size; i++)
     {
         table->entries[i].key = NULL;
+        table->entries[i].next = NULL;
     }
 
     return table;
@@ -60,27 +46,73 @@ struct HashTable *createHashTable(int size)
 
 void add(struct HashTable *table, char *key, int value)
 {
-    if (table = NULL)
+    if (table == NULL)
     {
         return;
     }
 
-    unsigned long hash = hashFunction(key);
+    unsigned int hash = hashFunction(key);
     unsigned int index = hash % table->size;
 
-    /** @note temp until hash table will use the collisiong handling */
-    free(table->entries[index].key);
+    struct Entry *entry = &table->entries[index];
 
-    table->entries[index].key = strdup(key);
-    table->entries[index].value = value;
+    if (entry->key == NULL)
+    {
+        entry->key = strdup(key);
+        entry->value = value;
+        return;
+    }
+
+    while (entry != NULL)
+    {
+        if (strcmp(entry->key, key) == 0)
+        {
+            // Key already exists, update the value
+            entry->value = value;
+            return;
+        }
+
+        if (entry->next == NULL)
+        {
+            break;
+        }
+
+        entry = entry->next;
+    }
+
+    struct Entry *newEntry = malloc(sizeof(struct Entry));
+    newEntry->key = strdup(key);
+    newEntry->value = value;
+    newEntry->next = NULL;
+
+    entry->next = newEntry;
 }
 
-void print(struct HashTable *table)
+void printTable(struct HashTable *table)
 {
+    if (table == NULL)
+    {
+        return;
+    }
+
     for (int i = 0; i < table->size; i++)
     {
-        struct Entry entry = table->entries[i];
-        printf("[I]: %d [K] %s [V] %d\n", i, entry.key, entry.value);
+        struct Entry *entry = &table->entries[i];
+
+        if (entry->key == NULL)
+        {
+            printf("[Index %d]: <empty>\n", i);
+            continue;
+        }
+
+        int listPos = 0;
+
+        while (entry != NULL)
+        {
+            printf("[Index %d]: [ListPos]: %d [Key]: %s [Value]: %d\n", i, listPos, entry->key, entry->value);
+            entry = entry->next;
+            listPos++;
+        }
     }
 }
 
@@ -89,7 +121,14 @@ int main()
     struct HashTable *table = createHashTable(11);
 
     add(table, "key1", 100);
-    print(table);
+    add(table, "key1", 102);
+
+    add(table, "key2", 123);
+    add(table, "key5", 1241);
+    add(table, "key10", 241);
+
+    add(table, "2yek", 1231);
+    printTable(table);
 
     return 0;
 }
