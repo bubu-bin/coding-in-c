@@ -138,6 +138,11 @@ int search(struct HashTable *table, char *key)
     return -1;
 }
 
+// TODO: add size to the hashtable
+// TODO: remove functionality
+// TODO: has functionality
+// TODO: set functionality
+
 int main()
 {
     struct HashTable *table = createHashTable(11);
