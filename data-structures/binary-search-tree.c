@@ -22,20 +22,28 @@ struct TreeNode *createNode(int value)
 struct TreeNode *insert(struct TreeNode *root, int value)
 {
     if (root == NULL)
-    {
         return createNode(value);
-    }
 
     if (root->value > value)
-    {
         root->left = insert(root->left, value);
-    }
     else
-    {
         root->right = insert(root->right, value);
-    }
 
     return root;
+}
+
+struct TreeNode *find(struct TreeNode *root, int value)
+{
+    if (root == NULL)
+        return NULL;
+
+    if (root->value == value)
+        return root;
+
+    if (root->value > value)
+        return find(root->left, value);
+    else
+        return find(root->right, value);
 }
 
 void inOrderTraversal(struct TreeNode *root)
@@ -59,6 +67,7 @@ int main(int argc, char const *argv[])
     insert(root, 80);
     insert(root, 32);
 
+    find(root, 80);
     inOrderTraversal(root);
     return 0;
 }
