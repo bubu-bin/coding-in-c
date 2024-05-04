@@ -125,7 +125,7 @@ int search(struct HashTable *table, char *key)
     unsigned int index = hashFunction(key) % table->size;
     struct Entry *entry = &table->entries[index];
 
-    while (entry != NULL)
+    while (entry->key != NULL)
     {
         if (strcmp(entry->key, key) == 0)
         {
