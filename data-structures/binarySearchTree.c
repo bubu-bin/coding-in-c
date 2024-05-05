@@ -8,6 +8,8 @@ typedef struct TreeNode
     struct TreeNode *right;
 } TreeNode;
 
+// add find left, find right
+
 struct TreeNode *createNode(int value)
 {
     TreeNode *node = malloc(sizeof(TreeNode));
