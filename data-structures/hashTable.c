@@ -125,7 +125,7 @@ int search(struct HashTable *table, char *key)
     unsigned int index = hashFunction(key) % table->size;
     struct Entry *entry = &table->entries[index];
 
-    while (entry->key != NULL)
+    while (entry != NULL && entry->key != NULL)
     {
         if (strcmp(entry->key, key) == 0)
         {
@@ -142,15 +142,10 @@ int main()
 {
     struct HashTable *table = createHashTable(11);
 
-    add(table, "key1", 100);
-    add(table, "key2", 123);
-    add(table, "key5", 1241);
-    add(table, "key10", 241);
-
     add(table, "2yek", 1231);
+    add(table, "key2", 1231);
+    search(table, "ke2y");
     printHashTable(table);
-
-    printf("value for key2 is %d", search(table, "key2"));
 
     return 0;
 }
